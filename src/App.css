@@ -1,0 +1,104 @@
+
+/* Estilo para a tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff; /* Define o fundo da tabela como branco */
+}
+
+/* Estilo para as células da tabela */
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para as células do cabeçalho da tabela */
+th {
+  background-color: #f2f2f2;
+}
+
+body {
+  height: 100vh; 
+  width: 100%;
+  background-image: url("https://blog.saraivaeducacao.com.br/wp-content/uploads/2022/03/biblioteca-universitaria.jpg");
+  background-size: cover; 
+  background-position: center; 
+}
+
+.titulo-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  padding: 2px;
+  border-radius: 8px;
+  margin-top: 20px; /* Defina a margem superior para ajustar o espaço entre o título e a lista de livros */
+  text-align: center;
+}
+
+
+.subtitulo-container {
+  background-color: #f2f2f2;
+  text-align: center;
+  color: black; 
+  margin-left: 15px; 
+  margin-right: 15px;
+  border-radius: 8px;
+}
+
+.subtitulo {
+  color:#fff;
+  text-align: center;
+  padding-top: 450px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: left;
+  margin-top: 10px; 
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+input {
+  margin: 5px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.input-text {
+  width: 100%; 
+}  
+
+.input-group {
+  display: flex;
+  justify-content: center;
+}
+
+
+.error-message {
+  background-color: #fff;
+  text-align: center;
+  color: rgb(255, 0, 0); 
+  margin: 20px auto; /* Define uma margem automática na parte superior e inferior */
+  max-width: 400px; /* Define uma largura máxima para a mensagem de erro */
+  border-radius: 8px;
+  font-weight: bold;
+}
