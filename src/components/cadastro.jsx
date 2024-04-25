@@ -13,7 +13,7 @@ const categoriasGenero = [
 ];
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080'
+    baseURL: 'http://localhost:3000'
   });
 
 const BookForm = ({carregarLivros}) => {
@@ -21,7 +21,7 @@ const BookForm = ({carregarLivros}) => {
   const [ano, setAno] = useState('');
   const [genero, setGenero] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [showFutureErrorMessage, setShowFutureErrorMessage] = useState(false); // Variável de estado para controlar a exibição da mensagem de erro de ano futuro
+  const [showFutureErrorMessage, setShowFutureErrorMessage] = useState(false); 
   
   const handleNovoLivro = async () => {
     try {
@@ -36,7 +36,7 @@ const BookForm = ({carregarLivros}) => {
         return;
       }
       
-      const status = 'EM ESTOQUE'; // Definindo o status padrão
+      const status = 'EM ESTOQUE'; //status padrão
       const statusValue = status === 'EM ESTOQUE' ? 1 : 0;
   
       const response = await api.post('/livros', {

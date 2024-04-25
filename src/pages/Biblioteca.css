@@ -1,0 +1,79 @@
+@import 'semantic-ui-css/semantic.min.css';
+/* Estilo para a tabela em geral */
+table {
+  width: 900px;;/*A tabela ocupa 100% da largura disponível.*/
+  border-collapse: collapse;/*Remove espaçamentos entre as células da tabela.*/
+  background-color: #fff; /* Define o fundo da tabela como branco */
+}
+
+/* Estilo para as células da tabela */
+th, td {
+  padding: 8px; /*Adiciona um espaçamento interno de 8 pixels nas células.*/
+  text-align: center;/*Alinha o texto ao centro nas células.*/
+  border-bottom: 1px solid #ddd;/*Adiciona uma linha sólida de 1 pixel na parte inferior das células.*/
+}
+
+
+
+/* Estilo para as células do cabeçalho da tabela */
+th {
+  background-color: #f2f2f2;/*Define o fundo das células do cabeçalho como uma cor cinza claro.*/
+}
+
+
+/*Define estilos para o corpo da página.*/
+body {
+  height: 100vh;
+  width: 100%;
+  background-image: url("https://i.pinimg.com/736x/c7/cc/a2/c7cca226199feb6fa927cac14ef03c0d.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.container {
+  text-align: left;
+  margin-top: 10px;
+}
+
+.subtitulo-lista-livros {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 750px; /* O padding-top adiciona espaço acima do elemento. Neste caso, move o subtítulo para baixo */
+}
+
+.formulario-container {
+  width: 500px; /* Define a largura do formulário */
+  margin-top: 20px; /* Adiciona margem superior */
+  text-align: center; /* Alinha o texto ao centro */
+  margin: 0 auto; /* Centraliza o formulário horizontalmente */
+  margin-bottom: 20px; /* Adiciona margem inferior */
+}
+
+.pesquisar {
+  margin-right: 20px; /* Adiciona margem à direita do elemento de pesquisa */
+}
+.subtitulo-container-cadastro {
+  background-color: #f2f2f2;
+  margin-left: 10px; 
+  margin-right: 15px;
+  margin-top: 20px; /* Adiciona margem superior */
+  margin-bottom: 20px; /* Adiciona margem inferior */
+  border-radius: 8px;
+}
+
+.error-message {
+  background-color: #fff;
+  text-align: center;
+  color: rgb(255, 0, 0); 
+  margin: 20px auto; /* Define uma margem automática na parte superior e inferior */
+  max-width: 400px; /* Define uma largura máxima para a mensagem de erro */
+  border-radius: 8px;
+  font-weight: bold;
+  align-items: center;
+}
