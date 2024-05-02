@@ -1,12 +1,8 @@
 /* eslint-disable */
 import React, { useState } from 'react';
 import { Form, FormField, Button, ButtonContent, Icon } from 'semantic-ui-react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
-
-const api = axios.create({
-  baseURL: 'http://localhost:3000'
-});
+import { useDispatch } from 'react-redux'; // Importa o hook useDispatch do React Redux
+import { registerUser } from '../redux/actions/authActions'; // Importa a action para registrar um usuário
 
 const CadastroUsuario = () => {
   const [name, setName] = useState('');
@@ -14,7 +10,7 @@ const CadastroUsuario = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate(); 
+  const dispatch = useDispatch(); // Obtém a função dispatch do Redux
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,21 +22,17 @@ const CadastroUsuario = () => {
         throw new Error('Por favor, preencha todos os campos.');
       }
 
-      // Envie os dados de cadastro para o backend
-      const response = await axios.post('http://localhost:3000/usuarios', { name, email, password });
+      // Dispatch da action para registrar um novo usuário
+      dispatch(registerUser({ name, email, password }));
 
-      // Se o cadastro for bem-sucedido, redirecione para a página de login
-      if (response.status === 200) {
-        alert('Usuário cadastrado com sucesso. Faça login para continuar.');
-        navigate('/login'); 
-      }
+      // Limpa os campos e reinicia as mensagens de erro
+      setName('');
+      setEmail('');
+      setPassword('');
+      setErrorMessage('');
     } catch (error) {
-      // Tratando erros 
-      if (error.response && error.response.status === 409) {
-        setErrorMessage('Este email já está em uso.');
-      } else {
-        setErrorMessage(error.message || 'Ocorreu um erro ao cadastrar usuário. Por favor, tente novamente.');
-      }
+      // Tratando erros
+      setErrorMessage(error.message || 'Ocorreu um erro ao cadastrar usuário. Por favor, tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -62,7 +54,7 @@ const CadastroUsuario = () => {
         <label>Password</label>
         <input 
           placeholder='Digite a sua senha: ' 
-          value={password} onChange={(e) => setPassword(e.target.value)} />
+          value={password} type="password" onChange={(e) => setPassword(e.target.value)} />
       </FormField>
       <Button animated onClick={handleSubmit}>
         <ButtonContent visible>Cadastrar</ButtonContent>

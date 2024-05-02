@@ -1,41 +1,33 @@
 /* eslint-disable */
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import CadastroUsuario from '../components/CadastroUsuarioForm'; 
+import { connect } from 'react-redux';
+import { userSignup } from '../redux/actions/USER_SIGNUP';
+import CadastroUsuarioForm from '../components/CadastroUsuarioForm';
 import { Link } from 'react-router-dom';
-import { ButtonContent, Button, Icon } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
+import { navigateToLoginPage } from '../redux/actions/NAVIGATE_TO_LOGIN_PAGE'; 
 
-
-
-const CadastroUsuarioPage = () => {
+const CadastroUsuarioPage = ({ userSignup, navigateToLoginPage }) => { 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate(); 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
 
     try {
-      // Validação de entrada
       if (!name || !email || !password) {
         throw new Error('Por favor, preencha todos os campos.');
       }
 
-      // enviando os dados de cadastro para o backend
-      const response = await axios.post('http://localhost:3000/usuarios', { name, email, password });
+      await userSignup(name, email, password); 
 
-      // se o cadastro for bem-sucedido, redirecione para a página de login
-      if (response.status === 200) {
-        alert('Usuário cadastrado com sucesso. Faça login para continuar.');
-        // Redirecionar para a página de login
-        navigate('/login'); 
-      }
+      alert('Usuário cadastrado com sucesso. Faça login para continuar.');
+      navigateToLoginPage();
     } catch (error) {
-      // Tratamento de erros
       if (error.response && error.response.status === 409) {
         setErrorMessage('Este email já está em uso.');
       } else {
@@ -49,7 +41,7 @@ const CadastroUsuarioPage = () => {
   return (
     <div>
       <h1>Cadastro de Usuários</h1>
-      <CadastroUsuario
+      <CadastroUsuarioForm
         name={name}
         setName={setName}
         email={email}
@@ -61,7 +53,7 @@ const CadastroUsuarioPage = () => {
         errorMessage={errorMessage}
       />
       <div>
-      <Link to="/">
+        <Link to="/">
           <Button>Voltar</Button>
         </Link>
       </div>
@@ -69,4 +61,9 @@ const CadastroUsuarioPage = () => {
   );
 };
 
-export default CadastroUsuarioPage;
+const mapDispatchToProps = {
+  userSignup,
+  navigateToLoginPage
+};
+
+export default connect(null, mapDispatchToProps)(CadastroUsuarioPage);

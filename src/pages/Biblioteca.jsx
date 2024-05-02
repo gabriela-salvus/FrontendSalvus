@@ -1,30 +1,15 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import './Biblioteca.css';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { RENT_BOOK, RETURN_BOOK, DELETE_BOOK} from '../redux/actions/libraryActions';
 import BookForm from '../components/cadastro';
 import { ButtonGroup, Button, ButtonOr, Input } from 'semantic-ui-react';
 import LogoutButton from '../components/LogoutButton';
 
-const api = axios.create({
-  baseURL: 'http://localhost:3000'
-});
+const Biblioteca = ({ livros, errorMessage, RENT_BOOK, RETURN_BOOK, DELETE_BOOK, carregarLivros }) => {
+  const [termoBusca, setTermoBusca] = React.useState('');
 
-const categoriasGenero = ['Ficção', 'Romance', 'Mistério', 'Fantasia', 'Não-ficção', 'Terror'];
-
-function Biblioteca() {
-  const [livros, setLivros] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [termoBusca, setTermoBusca] = useState('');
-
-  // Função para filtrar os livros com base no termo de busca
-  const filtrarLivros = (termo) => {
-    return livros.filter(livro =>
-      livro.titulo.toLowerCase().includes(termo.toLowerCase())
-    );
-  };
-
-  // Função para lidar com a mudança no termo de busca
   const handleBusca = (e) => {
     setTermoBusca(e.target.value);
   };
@@ -33,45 +18,10 @@ function Biblioteca() {
     carregarLivros();
   }, []);
 
-  const carregarLivros = async () => {
-    console.log('entrei');
-    try {
-      const response = await api.get('/livros');
-      const livrosData = response.data.message.map(livro => ({
-        ...livro,
-        status: livro.status === 0 ? 'ALUGADO' : 'EM ESTOQUE'
-      }));
-      setLivros(livrosData);
-    } catch (error) {
-      setErrorMessage('Erro ao carregar livros: ' + error.message);
-    }
-  };
-
-  const alugarLivro = async (livroId) => {
-    try {
-      await api.put(`/livros/${livroId}`, { status: 0 });
-      carregarLivros();
-    } catch (error) {
-      setErrorMessage('Erro ao alugar livro: ' + error.message);
-    }
-  };
-
-  const devolverLivro = async (livroId) => {
-    try {
-      await api.put(`/livros/${livroId}`, { status: 1 });
-      carregarLivros();
-    } catch (error) {
-      setErrorMessage('Erro ao devolver livro: ' + error.message);
-    }
-  };
-
-  const handleExcluirLivro = async (livroId) => {
-    try {
-      await api.delete(`/livros/${livroId}`);
-      carregarLivros();
-    } catch (error) {
-      setErrorMessage('Erro ao excluir livro: ' + error.message);
-    }
+  const filtrarLivros = (termo) => {
+    return livros.filter(livro =>
+      livro.titulo.toLowerCase().includes(termo.toLowerCase())
+    );
   };
 
   return (
@@ -109,11 +59,11 @@ function Biblioteca() {
                   <td>{livro.status}</td>
                   <td>
                     <ButtonGroup>
-                      <Button onClick={() => alugarLivro(livro.id)} disabled={livro.status === 'ALUGADO'}>Alugar</Button>
+                      <Button onClick={() => RENT_BOOK(livro.id)} disabled={livro.status === 'ALUGADO'}>Alugar</Button>
                       <ButtonOr text='ou' />
-                      <Button positive onClick={() => devolverLivro(livro.id)} disabled={livro.status === 'EM ESTOQUE'}>Devolver</Button>
+                      <Button positive onClick={() => RETURN_BOOK(livro.id)} disabled={livro.status === 'EM ESTOQUE'}>Devolver</Button>
                     </ButtonGroup>
-                    <Button content='Excluir' icon='trash' labelPosition='right' onClick={() => handleExcluirLivro(livro.id)}/>
+                    <Button content='Excluir' icon='trash' labelPosition='right' onClick={() => DELETE_BOOK(livro.id)}/>
                   </td>
                 </tr>
               ))}
@@ -134,6 +84,19 @@ function Biblioteca() {
       </div>
     </div>
   );
-}
+};
 
-export default Biblioteca;
+const mapStateToProps = state => ({
+  livros: state.book.livros,
+  errorMessage: state.book.errorMessage
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  RENT_BOOK,
+  RETURN_BOOK,
+  DELETE_BOOK,
+  carregarLivros
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Biblioteca);
+
