@@ -5,72 +5,59 @@ import axios from 'axios';
 import BookForm from '../components/cadastro';
 import { ButtonGroup, Button, ButtonOr, Input } from 'semantic-ui-react';
 import LogoutButton from '../components/LogoutButton';
+import { useSelector, useDispatch } from 'react-redux';
+import { list } from '../redux/actions/livros';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'http://localhost:3000',
+  headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
 });
 
 const categoriasGenero = ['Ficção', 'Romance', 'Mistério', 'Fantasia', 'Não-ficção', 'Terror'];
 
 function Biblioteca() {
-  const [livros, setLivros] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const dispatch = useDispatch();
+  const livrosStore = useSelector((state) => state.livros);
   const [termoBusca, setTermoBusca] = useState('');
 
-  // Função para filtrar os livros com base no termo de busca
   const filtrarLivros = (termo) => {
-    return livros.filter(livro =>
-      livro.titulo.toLowerCase().includes(termo.toLowerCase())
+    return livrosStore.data.filter(livro =>
+      livro && livro.titulo && livro.titulo.toLowerCase().includes(termo.toLowerCase())
     );
   };
-
-  // Função para lidar com a mudança no termo de busca
+  
   const handleBusca = (e) => {
     setTermoBusca(e.target.value);
   };
 
   useEffect(() => {
-    carregarLivros();
-  }, []);
-
-  const carregarLivros = async () => {
-    console.log('entrei');
-    try {
-      const response = await api.get('/livros');
-      const livrosData = response.data.message.map(livro => ({
-        ...livro,
-        status: livro.status === 0 ? 'ALUGADO' : 'EM ESTOQUE'
-      }));
-      setLivros(livrosData);
-    } catch (error) {
-      setErrorMessage('Erro ao carregar livros: ' + error.message);
-    }
-  };
+    dispatch(list());
+  }, [dispatch]);
 
   const alugarLivro = async (livroId) => {
     try {
-      await api.put(`/livros/${livroId}`, { status: 0 });
-      carregarLivros();
+      await api.put(`/livros/${livroId}`, { status: 0,});
+      dispatch(list()); 
     } catch (error) {
-      setErrorMessage('Erro ao alugar livro: ' + error.message);
+      console.error('Erro ao alugar livro:', error.message);
     }
   };
 
   const devolverLivro = async (livroId) => {
     try {
       await api.put(`/livros/${livroId}`, { status: 1 });
-      carregarLivros();
+      dispatch(list()); 
     } catch (error) {
-      setErrorMessage('Erro ao devolver livro: ' + error.message);
+      console.error('Erro ao devolver livro:', error.message);
     }
   };
 
   const handleExcluirLivro = async (livroId) => {
     try {
       await api.delete(`/livros/${livroId}`);
-      carregarLivros();
+      dispatch(list()); 
     } catch (error) {
-      setErrorMessage('Erro ao excluir livro: ' + error.message);
+      console.error('Erro ao excluir livro:', error.message);
     }
   };
 
@@ -126,9 +113,6 @@ function Biblioteca() {
           </div>
           <BookForm
             categoriasGenero={categoriasGenero}
-            errorMessage={errorMessage}
-            setErrorMessage={setErrorMessage}
-            carregarLivros={carregarLivros}
           />
         </div>
       </div>

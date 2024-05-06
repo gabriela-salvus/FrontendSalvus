@@ -3,33 +3,38 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, FormField, Button, ButtonContent, Icon } from 'semantic-ui-react';
+import { useSelector, useDispatch } from 'react-redux'; 
+import { swap } from '../redux/actions/navigation';
 
-const LoginUsuario = ({ onSuccess }) => {
+const LoginUsuario = () => {
   const navigate = useNavigate(); 
+  const dispatch = useDispatch(); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const usuariosStore = useSelector((state) => state.usuarios); 
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    //olha se os campos de email e senha estão vazios
+    
     if (!email || !password) {
       setErrorMessage('Por favor, preencha todos os campos.');
-      return; //para a execução da função se os campos estiverem vazios
+      return; 
     }
 
     try {
-      //enviando os dados de login para o backend
+      
       const response = await axios.post('http://localhost:3000/login', { email, password });
       
-      //o login sendo bem-sucedido, exibe o token de acesso
       if (response.status === 200) {
-        localStorage.setItem('token',response.data.token);
-        onSuccess();
+        localStorage.setItem('token', response.data.message.token);
+        console.log('bem bom');
+        dispatch(swap("Biblioteca"));
+
+      
+        dispatch({ type: 'USUARIOS_LIST' });
       }
     } catch (error) {
-      //se ocorrer um erro ao fazer login, exiba uma mensagem de erro
       if (error.response && error.response.status === 401) {
         setErrorMessage('Email ou senha incorretos. Por favor, tente novamente.');
       } else {

@@ -12,12 +12,12 @@ function isUserAuthenticated() {
   return localStorage.getItem('token');
 }
 
-// Rota protegida para a página da biblioteca
+
 const PrivateBibliotecaRoute = ({ element }) => {
   return isUserAuthenticated() ? (
     element
   ) : (
-    <Navigate to="/" replace /> // redireciona para a página inicial se o usuário não estiver autenticado
+    <Navigate to="/" replace /> 
   );
 };
 

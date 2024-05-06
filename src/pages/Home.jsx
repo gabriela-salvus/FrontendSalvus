@@ -1,31 +1,31 @@
-
-/* eslint-disable */
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import CadastroUsuarioPage from './Cadastro';
-import LoginUsuario from '../components/LoginForm';
-import { ButtonContent, Button, Icon } from 'semantic-ui-react';
-import './Home.css';
+import React from 'react';
+import { Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { swap } from '../redux/actions/navigation';
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  const handleLoginClick = () => {
+    console.log('clicando login')
+    dispatch(swap("Login"));
+  };
+
+  const handleCadastroClick = () => {
+    console.log('clicando cadastro')
+    dispatch(swap("Cadastro"));
+  };
+
   return (
     <div>
       <h1>Bem Vindo a Biblioteca online!</h1>
       <div>
-        {/* Botão de Login */}
-        <Link to="/login">
-          <Button>Login</Button>
-        </Link>
-        {/* Botão de Cadastro */}
-        <Link to="/cadastro">
-          <Button>Cadastro</Button>
-        </Link>
+        <Button onClick={handleLoginClick}>Login</Button>
+        <Button onClick={handleCadastroClick}>Cadastro</Button>
       </div>
     </div>
   );
 };
 
 export default Home;
-
-
