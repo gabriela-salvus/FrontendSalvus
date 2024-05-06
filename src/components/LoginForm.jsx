@@ -1,18 +1,21 @@
 /* eslint-disable */
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, FormField, Button, ButtonContent, Icon } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux'; 
-import { swap } from '../redux/actions/navigation';
+import { trocar } from '../redux/actions/navigation';
+import { useNavigate } from 'react-router';
 
 const LoginUsuario = () => {
-  const navigate = useNavigate(); 
   const dispatch = useDispatch(); 
+  const navigate = useNavigate()
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const usuariosStore = useSelector((state) => state.usuarios); 
+  
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -29,7 +32,8 @@ const LoginUsuario = () => {
       if (response.status === 200) {
         localStorage.setItem('token', response.data.message.token);
         console.log('bem bom');
-        dispatch(swap("Biblioteca"));
+        dispatch(trocar("Biblioteca"));
+        navigate('/biblioteca')
 
       
         dispatch({ type: 'USUARIOS_LIST' });

@@ -1,27 +1,25 @@
 /* eslint-disable */
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import LoginUsuario from '../components/LoginForm';
-import { ButtonContent, Button, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { list } from '../redux/actions/login';
-import { swap } from '../redux/actions/navigation'; 
+import { trocar } from '../redux/actions/navigation'; 
 import axios from 'axios'; 
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const dispatch = useDispatch(); 
   const loginStore = useSelector((state) => state.login);
-  const navigationState = useSelector((state) => state.navigation); 
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false); 
 
-  const handleHomeClick = () => {
-    console.log('clicando no home')
-    dispatch(swap("Home"));
+  const handleHomeClick = () => { 
+    dispatch(trocar("Home"));
+    navigate('/');
   };
 
   const handleSubmit = async (event) => {
@@ -36,7 +34,8 @@ const LoginPage = () => {
 
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token);
-        dispatch(swap("Biblioteca"));
+        dispatch(trocar("Biblioteca"));
+        navigate('/biblioteca');
       } else {
         throw new Error('Ocorreu um erro durante o login.');
       }

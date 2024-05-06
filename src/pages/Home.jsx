@@ -1,20 +1,21 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { swap } from '../redux/actions/navigation';
+import { trocar } from '../redux/actions/navigation';
+import { useNavigate } from 'react-router';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    console.log('clicando login')
-    dispatch(swap("Login"));
+    dispatch(trocar("Login"));
+    navigate('/login');
   };
 
   const handleCadastroClick = () => {
-    console.log('clicando cadastro')
-    dispatch(swap("Cadastro"));
+    dispatch(trocar("Cadastro"));
+    navigate('/cadastro');
   };
 
   return (

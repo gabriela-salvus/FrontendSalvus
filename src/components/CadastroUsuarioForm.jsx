@@ -4,7 +4,8 @@ import { Form, FormField, Button, ButtonContent, Icon } from 'semantic-ui-react'
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { list } from '../redux/actions/usuarios';  
-import { swap } from "../redux/actions/navigation";
+import { trocar } from "../redux/actions/navigation";
+import { useNavigate } from 'react-router';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
@@ -14,6 +15,7 @@ const api = axios.create({
 const CadastroUsuario = () => {
   const dispatch = useDispatch(); 
   const navigationState = useSelector((state) => state.navigation); 
+  const navigate = useNavigate()
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -32,7 +34,8 @@ const CadastroUsuario = () => {
 
       if (response.status === 200) {
         alert('Usuário cadastrado com sucesso. Faça login para continuar.');
-        dispatch(swap("Login"));
+        dispatch(trocar("Login"));
+        navigate('/login');
         dispatch(list()); 
       }
     } catch (error) {

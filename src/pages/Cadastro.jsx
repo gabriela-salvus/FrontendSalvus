@@ -5,17 +5,25 @@ import axios from 'axios';
 import CadastroUsuario from '../components/CadastroUsuarioForm'; 
 import { useSelector } from 'react-redux';
 import { list } from '../redux/actions/usuarios';
-import { swap } from '../redux/actions/navigation'; 
+import { trocar } from '../redux/actions/navigation'; 
+import { useNavigate } from 'react-router-dom'; 
 
 const CadastroUsuarioPage = () => {
   const dispatch = useDispatch(); 
   const usuariosStore = useSelector((state) => state.usuarios); 
+  const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const handleHomeClick = () => {
+    dispatch(trocar("Home"));
+    navigate('/');
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,7 +38,8 @@ const CadastroUsuarioPage = () => {
 
       if (response.status === 200) {
         alert('Usuário cadastrado com sucesso. Faça login para continuar.');
-        dispatch(swap("Login")); 
+        dispatch(trocar("Login"));
+        navigate('/login'); 
         dispatch(list()); 
       }
     } catch (error) {
@@ -59,7 +68,7 @@ const CadastroUsuarioPage = () => {
         errorMessage={errorMessage}
       />
       <div>
-        <Button onClick={() => dispatch(swap("Home")) }>Voltar</Button>
+        <Button onClick={handleHomeClick}>Voltar</Button>
       </div>
     </div>
   );

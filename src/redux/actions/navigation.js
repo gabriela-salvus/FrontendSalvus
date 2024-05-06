@@ -1,6 +1,6 @@
-export const swap = (page) => {
+export const trocar = (page) => {
     return {
-      type: "SWAP",
+      type: "TROCAR",
       payload: {
         item: page,
       },
