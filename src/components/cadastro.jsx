@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Form, FormField, Button, ButtonContent, Icon, Dropdown } from 'semantic-ui-react';
 import { useSelector, useDispatch } from 'react-redux'; 
-import axios from 'axios';
 import { list } from '../redux/actions/livros'; 
+import api from '../api/index';
+
 
 const categoriasGenero = [
   { key: 'Ficção', text: 'Ficção', value: 'Ficção' },
@@ -13,14 +14,8 @@ const categoriasGenero = [
   { key: 'Terror', text: 'Terror', value: 'Terror' }
 ];
 
-const api = axios.create({
-  baseURL: 'http://localhost:3000',
-  headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
-});
-
 const BookForm = () => {
-  const dispatch = useDispatch(); 
-  const livrosStore = useSelector((state) => state.livros); 
+  const dispatch = useDispatch();  
   const [titulo, setTitulo] = useState('');
   const [ano, setAno] = useState('');
   const [genero, setGenero] = useState('');

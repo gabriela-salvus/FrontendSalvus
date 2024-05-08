@@ -1,17 +1,12 @@
-/* eslint-disable */
+
 import React, { useState, useEffect } from 'react';
 import './Biblioteca.css';
-import axios from 'axios';
 import BookForm from '../components/cadastro';
 import { ButtonGroup, Button, ButtonOr, Input } from 'semantic-ui-react';
-import LogoutButton from '../components/LogoutButton';
 import { useSelector, useDispatch } from 'react-redux';
 import { list } from '../redux/actions/livros';
+import api from '../api/index';
 
-const api = axios.create({
-  baseURL: 'http://localhost:3000',
-  headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
-});
 
 const categoriasGenero = ['Ficção', 'Romance', 'Mistério', 'Fantasia', 'Não-ficção', 'Terror'];
 
@@ -74,7 +69,6 @@ function Biblioteca() {
                 value={termoBusca}
                 onChange={handleBusca}
               />
-              <LogoutButton/>
             </div>
           </div>
           <table>

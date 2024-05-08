@@ -1,0 +1,29 @@
+
+.titulo {
+    font-size: 80px;
+    padding-right: 100px;
+    text-align: left;
+}
+
+.container {
+    align-items: center;
+    display: inline-flex;
+    justify-content: space-between;
+  }
+
+.imagem{
+    order: 2;
+}
+
+.imagem img{
+    order: 2;
+    border-radius: 50%;
+    width: 350px;
+    height: 350px;
+}
+
+
+.child{
+    order: 1;
+    align-items: center;
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from 'semantic-ui-react';
+import { Button, Menu } from 'semantic-ui-react';
 import axios from 'axios';
 import CadastroUsuario from '../components/CadastroUsuarioForm'; 
 import { useSelector } from 'react-redux';
@@ -55,7 +55,15 @@ const CadastroUsuarioPage = () => {
 
   return (
     <div>
-      <h1>Cadastro de Usuários</h1>
+      <Menu fixed='top'>
+        <Menu.Item header>Página de Cadastro</Menu.Item>
+        <Menu.Menu position='right'>
+          <Menu.Item>
+            <Button onClick={handleHomeClick}>Home</Button>
+          </Menu.Item>
+        </Menu.Menu>
+      </Menu>
+      <h1>Faça seu cadastro</h1>
       <CadastroUsuario
         name={name}
         setName={setName}
@@ -67,9 +75,6 @@ const CadastroUsuarioPage = () => {
         loading={loading}
         errorMessage={errorMessage}
       />
-      <div>
-        <Button onClick={handleHomeClick}>Voltar</Button>
-      </div>
     </div>
   );
 };

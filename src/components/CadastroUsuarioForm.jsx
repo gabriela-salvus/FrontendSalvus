@@ -6,15 +6,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { list } from '../redux/actions/usuarios';  
 import { trocar } from "../redux/actions/navigation";
 import { useNavigate } from 'react-router';
+import  { getToken } from '../storage/auth'
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
-  headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+  headers: {'Authorization': `Bearer ${getToken()}`}
 });
 
 const CadastroUsuario = () => {
-  const dispatch = useDispatch(); 
-  const navigationState = useSelector((state) => state.navigation); 
+  const dispatch = useDispatch();  
   const navigate = useNavigate()
 
   const [name, setName] = useState('');
@@ -63,7 +63,7 @@ const CadastroUsuario = () => {
         <label>Password</label>
         <input 
           placeholder='Digite a sua senha: ' 
-          value={password} onChange={(e) => setPassword(e.target.value)} />
+          value={password} type='password' onChange={(e) => setPassword(e.target.value)} />
       </FormField>
       <Button animated onClick={handleSubmit}>
         <ButtonContent visible>Cadastrar</ButtonContent>

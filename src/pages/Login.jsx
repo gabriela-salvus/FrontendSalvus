@@ -1,21 +1,20 @@
 /* eslint-disable */
 import React, { useState } from 'react';
 import LoginUsuario from '../components/LoginForm';
-import { Button } from 'semantic-ui-react';
-import { useSelector, useDispatch } from 'react-redux';
+import { Button, Menu, Message, Dimmer, Loader } from 'semantic-ui-react';
+import { useDispatch } from 'react-redux';
 import { trocar } from '../redux/actions/navigation'; 
 import axios from 'axios'; 
 import { useNavigate } from 'react-router-dom';
+import { login } from '../redux/actions/loginAuth';
 
 const LoginPage = () => {
   const dispatch = useDispatch(); 
-  const loginStore = useSelector((state) => state.login);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false); 
 
   const handleHomeClick = () => { 
     dispatch(trocar("Home"));
@@ -33,7 +32,7 @@ const LoginPage = () => {
       const response = await axios.post('http://localhost:3000/login', { email, password });
 
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token);
+        dispatch(login);
         dispatch(trocar("Biblioteca"));
         navigate('/biblioteca');
       } else {
@@ -48,19 +47,27 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <Menu fixed='top'>
+        <Menu.Item header>Página de Login</Menu.Item>
+        <Menu.Menu position='right'>
+          <Menu.Item>
+            <Button onClick={handleHomeClick}>Home</Button>
+          </Menu.Item>
+        </Menu.Menu>
+      </Menu>
+      <h1>Faça seu Login</h1>
+      <Dimmer active={loading}>
+        <Loader />
+      </Dimmer>
+      {errorMessage && <Message negative>{errorMessage}</Message>}
       <LoginUsuario
         email={email}
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
-        errorMessage={errorMessage}
         handleSubmit={handleSubmit}
         loading={loading} 
       />
-      <div>
-       <Button onClick={handleHomeClick}>Voltar</Button>
-      </div>
     </div>
   );
 };
